@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import { Roboto } from "next/font/google";
 import "./globals.css";
 
+import ReactQueryProvider from "@/providers/ReactQueryProvider";
+
 const roboto = Roboto({
   variable: "--font-roboto",
   subsets: ["latin"],
@@ -20,7 +22,11 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="it">
-      <body className={roboto.variable}>{children}</body>
+      <body
+        className={`${roboto.variable} bg-gradient-to-b from-neutral-900 via-yellow-800 to-yellow-900`}
+      >
+        <ReactQueryProvider>{children}</ReactQueryProvider>
+      </body>
     </html>
   );
 }
