@@ -1,3 +1,11 @@
+import HeroSection from "@/components/home/HeroSection";
+import Header from "@/components/Header";
+
 export default function Home() {
-  return <div>Kings League IT</div>;
+  return (
+    <>
+      <Header />
+      <HeroSection />
+    </>
+  );
 }
