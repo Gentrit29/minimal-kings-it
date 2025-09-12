@@ -4,6 +4,8 @@ import "./globals.css";
 
 import ReactQueryProvider from "@/providers/ReactQueryProvider";
 
+import { Toaster } from "react-hot-toast";
+
 const roboto = Roboto({
   variable: "--font-roboto",
   subsets: ["latin"],
@@ -22,9 +24,27 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="it">
-      <body
-        className={`${roboto.variable} bg-gradient-to-b from-neutral-900 via-yellow-800 to-yellow-900`}
-      >
+      <body className={roboto.variable}>
+        <Toaster
+          position="top-center"
+          gutter={12}
+          containerStyle={{ margin: "8px" }}
+          toastOptions={{
+            success: {
+              duration: 1000,
+            },
+            error: {
+              duration: 2000,
+            },
+            style: {
+              background: "#171717",
+              border: "1px solid #404040",
+              color: "#fff",
+              fontSize: "16px",
+              maxWidth: "500px",
+            },
+          }}
+        />
         <ReactQueryProvider>{children}</ReactQueryProvider>
       </body>
     </html>
