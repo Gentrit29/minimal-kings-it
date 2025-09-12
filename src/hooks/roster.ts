@@ -1,0 +1,52 @@
+import { deleteRosterById, insertRoster, updateRoster } from "@/lib/actions";
+import { Roster } from "@/lib/types";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import toast from "react-hot-toast";
+
+export function useInsertRoster() {
+  const queryClient = useQueryClient();
+  const { mutate: insertRosterMutation } = useMutation({
+    mutationFn: (roster: Roster) => insertRoster(roster),
+    onSuccess: () => {
+      toast.success("Roster inserito con successo!");
+      queryClient.invalidateQueries({ queryKey: ["teamsWithRoster"] });
+    },
+    onError: () => {
+      toast.success("Impossibile inserire il roster. Riprova.");
+    },
+  });
+
+  return { insertRosterMutation };
+}
+
+export function useDeleteRoster() {
+  const queryClient = useQueryClient();
+  const { mutate: deleteRosterMutation } = useMutation({
+    mutationFn: (id: string) => deleteRosterById(id),
+    onSuccess: () => {
+      toast.success("Roster eliminato con successo!");
+      queryClient.invalidateQueries({ queryKey: ["teamsWithRoster"] });
+    },
+    onError: () => {
+      toast.success("Impossibile eliminare il roster. Riprova.");
+    },
+  });
+
+  return { deleteRosterMutation };
+}
+
+export function useUpdateRoster() {
+  const queryClient = useQueryClient();
+  const { mutate: updateRosterMutation } = useMutation({
+    mutationFn: (roster: Roster) => updateRoster(roster),
+    onSuccess: () => {
+      toast.success("Roster aggiornato con successo!");
+      queryClient.invalidateQueries({ queryKey: ["teamsWithRoster"] });
+    },
+    onError: () => {
+      toast.success("Impossibile aggiornare il roster. Riprova.");
+    },
+  });
+
+  return { updateRosterMutation };
+}
