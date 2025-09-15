@@ -12,7 +12,7 @@ export function useInsertRoster() {
       queryClient.invalidateQueries({ queryKey: ["teamsWithRoster"] });
     },
     onError: () => {
-      toast.success("Impossibile inserire il roster. Riprova.");
+      toast.error("Impossibile inserire il roster. Riprova.");
     },
   });
 
@@ -28,7 +28,7 @@ export function useDeleteRoster() {
       queryClient.invalidateQueries({ queryKey: ["teamsWithRoster"] });
     },
     onError: () => {
-      toast.success("Impossibile eliminare il roster. Riprova.");
+      toast.error("Impossibile eliminare il roster. Riprova.");
     },
   });
 
@@ -44,7 +44,7 @@ export function useUpdateRoster() {
       queryClient.invalidateQueries({ queryKey: ["teamsWithRoster"] });
     },
     onError: () => {
-      toast.success("Impossibile aggiornare il roster. Riprova.");
+      toast.error("Impossibile aggiornare il roster. Riprova.");
     },
   });
 
