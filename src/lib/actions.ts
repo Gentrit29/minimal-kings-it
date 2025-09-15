@@ -1,10 +1,53 @@
 import supabase from "@/providers/supabase";
-import { Roster, SignIn, Team } from "@/lib/types";
+import { President, Roster, SignIn, Team } from "@/lib/types";
+
+export async function getPresidents() {
+  const { data: presidents, error } = await supabase
+    .from("presidents")
+    .select("*");
+
+  if (error) throw new Error(error.message);
+
+  return presidents;
+}
+
+export async function insertPresident(president: President) {
+  const { data, error } = await supabase.from("presidents").insert(president);
+
+  if (error) throw new Error(error.message);
+
+  return data;
+}
+
+export async function deletePresidentById(id: number) {
+  const { data, error } = await supabase
+    .from("presidents")
+    .delete()
+    .eq("id", id);
+
+  if (error) throw new Error(error.message);
+
+  return data;
+}
+
+export async function updatePresident(president: President) {
+  const { id, ...fields } = president;
+  const { data, error } = await supabase
+    .from("presidents")
+    .update(fields)
+    .eq("id", id)
+    .select()
+    .single();
+
+  if (error) throw new Error(error.message);
+
+  return data;
+}
 
 export async function getTeamsWithRosters() {
   const { data: teams, error } = await supabase
     .from("teams")
-    .select("*, roster(*)");
+    .select("*, roster(*), president:president_id(*)");
 
   if (error) throw new Error(error.message);
 
@@ -13,6 +56,28 @@ export async function getTeamsWithRosters() {
 
 export async function insertTeam(team: Team) {
   const { data, error } = await supabase.from("teams").insert(team);
+
+  if (error) throw new Error(error.message);
+
+  return data;
+}
+
+export async function deleteTeamById(id: number) {
+  const { data, error } = await supabase.from("teams").delete().eq("id", id);
+
+  if (error) throw new Error(error.message);
+
+  return data;
+}
+
+export async function updateTeam(team: Team) {
+  const { id, ...fields } = team;
+  const { data, error } = await supabase
+    .from("teams")
+    .update(fields)
+    .eq("id", id)
+    .select()
+    .single();
 
   if (error) throw new Error(error.message);
 
