@@ -1,12 +1,20 @@
 export type Role = "coach" | "staff" | "player";
 export type Status = "wildcard" | "draft" | "transfer";
 
+export interface President {
+  id: number;
+  name: string;
+  social_links: Record<string, string>;
+  photo: string;
+}
+
 export interface Team {
   id: number;
   name: string;
-  owner: string;
   logo: string;
-  external_link: string;
+  kl_link: string;
+  president_id: number;
+  president?: President;
   roster?: Roster[];
 }
 
