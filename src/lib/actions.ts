@@ -47,7 +47,8 @@ export async function updatePresident(president: President) {
 export async function getTeamsWithRosters() {
   const { data: teams, error } = await supabase
     .from("teams")
-    .select("*, roster(*), president:president_id(*)");
+    .select("*, roster(*), president:president_id(*)")
+    .order("role_order", { referencedTable: "roster" });
 
   if (error) throw new Error(error.message);
 
