@@ -24,8 +24,9 @@ export default function AddRosterForm({
     defaultValues: roster ?? {
       name: "",
       team_id: undefined,
-      role: "player",
-      status: "wildcard",
+      role: "staff",
+      status: null,
+      role_field: null,
     },
   });
 
@@ -103,14 +104,25 @@ export default function AddRosterForm({
           <option value="staff">Staff</option>
         </select>
         {watch("role") === "player" && (
-          <select
-            className="w-full rounded-md border border-neutral-600 bg-neutral-900 px-4 py-2 text-white placeholder-neutral-400 transition outline-none focus:border-yellow-400 focus:ring focus:ring-yellow-400/30"
-            {...register("status", { required: true })}
-          >
-            <option value="draft">Draft</option>
-            <option value="wildcard">Wildcard</option>
-            <option value="transfer">Transfer</option>
-          </select>
+          <>
+            <select
+              className="w-full rounded-md border border-neutral-600 bg-neutral-900 px-4 py-2 text-white placeholder-neutral-400 transition outline-none focus:border-yellow-400 focus:ring focus:ring-yellow-400/30"
+              {...register("status", { required: true })}
+            >
+              <option value="draft">Draft</option>
+              <option value="wildcard">Wildcard</option>
+              <option value="transfer">Transfer</option>
+            </select>
+            <select
+              className="w-full rounded-md border border-neutral-600 bg-neutral-900 px-4 py-2 text-white placeholder-neutral-400 transition outline-none focus:border-yellow-400 focus:ring focus:ring-yellow-400/30"
+              {...register("role_field", { required: true })}
+            >
+              <option value="ATT">ATT</option>
+              <option value="CC">CC</option>
+              <option value="POR">POR</option>
+              <option value="DIF">DIF</option>
+            </select>
+          </>
         )}
       </div>
       <button
