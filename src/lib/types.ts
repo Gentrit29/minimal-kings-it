@@ -1,5 +1,6 @@
 export type Role = "coach" | "staff" | "player";
-export type Status = "wildcard" | "draft" | "transfer";
+export type Status = "wildcard" | "draft" | "transfer" | null;
+export type RoleField = "ATT" | "CC" | "POR" | "DIF" | null;
 
 export interface President {
   id: number;
@@ -20,10 +21,12 @@ export interface Team {
 
 export interface Roster {
   id?: string;
+  created_at: string;
   name: string;
   team_id: number;
   role: Role;
   status?: Status;
+  role_field: RoleField;
 }
 
 export interface SignIn {
