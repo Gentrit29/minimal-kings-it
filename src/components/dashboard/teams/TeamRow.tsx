@@ -1,10 +1,12 @@
-import { Team } from "@/lib/types";
 import Image from "next/image";
 
-import { TfiCrown } from "react-icons/tfi";
-import { MdKeyboardArrowUp, MdKeyboardArrowDown } from "react-icons/md";
-import Button from "@/components/ui/Button";
+import { Button } from "@/components/ui/Button";
+
+import { Team } from "@/lib/types";
+
 import { useDeleteTeam } from "@/hooks";
+
+import { ChevronDown, ChevronUp, Crown, Pencil, Trash } from "lucide-react";
 
 interface TeamRowProps {
   team: Team;
@@ -21,7 +23,7 @@ export default function TeamRow({
 }: TeamRowProps) {
   const { deleteTeamMutation } = useDeleteTeam();
   return (
-    <div className="w-full rounded-md border border-neutral-600 bg-neutral-900 p-4">
+    <div className="border-border bg-card text-card-foreground w-full rounded-md border p-2 sm:p-4">
       <div className="flex items-center">
         <div className="flex flex-col items-start space-y-2">
           <span className="flex items-center gap-2">
@@ -29,32 +31,23 @@ export default function TeamRow({
             {team.name}
           </span>
           <span className="ml-2 flex items-center gap-2">
-            <TfiCrown className="h-4 w-4 text-yellow-500" />
+            <Crown className="text-yellow-500" />
             {team.president?.name}
           </span>
         </div>
-        <div className="items-ceneter ml-auto flex gap-2">
-          <Button
-            variant="primary"
-            size="small"
-            onClick={() => onEditTeam(team)}
-          >
-            Modifica
+        <div className="ml-auto flex flex-col items-center gap-2 sm:flex-row">
+          <Button variant="outline" onClick={() => onEditTeam(team)}>
+            <Pencil />
           </Button>
           <Button
             variant="destructive"
-            size="small"
             onClick={() => deleteTeamMutation(team.id)}
           >
-            Elimina
+            <Trash />
           </Button>
-          <button onClick={onToggle}>
-            {open ? (
-              <MdKeyboardArrowDown className="h-6 w-6" />
-            ) : (
-              <MdKeyboardArrowUp className="h-6 w-6" />
-            )}
-          </button>
+          <Button variant="ghost" onClick={onToggle}>
+            {open ? <ChevronDown /> : <ChevronUp />}
+          </Button>
         </div>
       </div>
     </div>
