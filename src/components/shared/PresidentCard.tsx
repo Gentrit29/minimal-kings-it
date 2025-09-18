@@ -4,8 +4,9 @@ import Image from "next/image";
 
 import { President } from "@/lib/types";
 
-import { TfiCrown } from "react-icons/tfi";
 import { FaTwitch, FaInstagram, FaYoutube } from "react-icons/fa";
+
+import { Crown } from "lucide-react";
 
 interface PresidentCardProps {
   president: President;
@@ -23,19 +24,19 @@ export default function PresidentCard({
   children,
 }: PresidentCardProps) {
   return (
-    <div className="group flex min-h-[30px] w-full flex-col items-center justify-between space-y-6 rounded-md border border-neutral-600 p-4 transition-colors duration-300 hover:border-yellow-500">
+    <div className="group border-border hover:border-ring bg-card text-card-foreground flex max-h-[350px] w-full flex-col items-center justify-between space-y-6 rounded-md border p-4 transition-colors duration-300">
       <Image
         src={president.photo}
         alt={president.name}
         width={400}
         height={400}
-        className="rounded-md border border-neutral-600 transition-transform duration-300 group-hover:scale-105"
+        className="border-border rounded-md border transition-transform duration-300 group-hover:scale-105"
       />
       <div className="flex flex-col items-center gap-3 text-sm sm:text-lg">
-        <span className="flex items-center gap-2">
-          <TfiCrown className="hidden h-4 w-4 text-yellow-500 sm:flex" />
+        <h2 className="flex items-center gap-2 text-center">
+          <Crown className="text-primary hidden sm:flex" />
           {president.name}
-        </span>
+        </h2>
         <div className="flex w-full justify-evenly">
           {president.social_links &&
             Object.entries(president.social_links).map(([platform, url]) => (
@@ -50,7 +51,7 @@ export default function PresidentCard({
             ))}
         </div>
         {children && (
-          <div className="mt-2 flex flex-col items-center gap-2 sm:flex-row">
+          <div className="mt-2 flex flex-row items-center gap-2">
             {children}
           </div>
         )}
