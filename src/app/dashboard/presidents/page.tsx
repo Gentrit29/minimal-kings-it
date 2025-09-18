@@ -9,18 +9,26 @@ import {
   usePresidents,
 } from "@/hooks";
 
-import { RiAdminLine } from "react-icons/ri";
-import { IoIosAddCircleOutline } from "react-icons/io";
-import { GoArrowLeft } from "react-icons/go";
-
 import { useRouter } from "next/navigation";
-import { CiLogout } from "react-icons/ci";
 
-import Button from "@/components/ui/Button";
-import NavLink from "@/components/ui/Link";
 import AddPresidentForm from "@/components/dashboard/presidents/AddPresidentForm";
+
 import { President } from "@/lib/types";
-import PresidentCard from "@/components/PresidentCard";
+
+import PresidentCard from "@/components/shared/PresidentCard";
+
+import { Button } from "@/components/ui/Button";
+
+import {
+  ArrowLeft,
+  CirclePlus,
+  LogOut,
+  Pencil,
+  Trash,
+  UserStar,
+} from "lucide-react";
+
+import Link from "next/link";
 
 export default function DashboardPresidents() {
   const router = useRouter();
@@ -52,44 +60,49 @@ export default function DashboardPresidents() {
   return (
     <div className="space-y-2 px-8 py-10">
       <div className="flex items-center justify-between">
-        <NavLink href="/" variant="navigation">
-          <GoArrowLeft />
-          Home
-        </NavLink>
-        <Button variant="secondary" onClick={() => logoutMutation()}>
-          <CiLogout className="h-6 w-6" />
+        <Button asChild variant="ghost">
+          <Link href="/">
+            <ArrowLeft />
+            Home
+          </Link>
+        </Button>
+        <Button variant="outline" onClick={() => logoutMutation()}>
+          <LogOut />
           Logout
         </Button>
       </div>
       <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
-        <h2 className="flex w-full items-center gap-2 rounded-lg border border-neutral-600 px-4 py-2 sm:w-fit">
-          <RiAdminLine />
-          Presidents Dashboard KL
+        <h2 className="border-border flex w-full items-center gap-2 rounded-lg border px-4 py-2 sm:w-fit">
+          <UserStar />
+          Dashboard Presidenti KL
         </h2>
         <Button
-          variant="primary"
-          className="sm:ml-auto"
-          onClick={() => setTogglePresidentForm(true)}
+          variant="default"
+          className="ml-auto w-full sm:w-fit"
+          onClick={() => {
+            setSelectedPresident(null);
+            setTogglePresidentForm(true);
+          }}
         >
-          <IoIosAddCircleOutline className="h-6 w-6" /> President
+          <CirclePlus /> Presidente
         </Button>
       </div>
       <div className="grid grid-cols-2 gap-4 lg:grid-cols-3 xl:grid-cols-4">
         {presidents?.map((president: President) => (
           <PresidentCard key={president.id} president={president}>
             <Button
-              variant="primary"
-              size="small"
+              size="sm"
+              variant="outline"
               onClick={() => handleEditPresident(president)}
             >
-              Modifica
+              <Pencil />
             </Button>
             <Button
+              size="sm"
               variant="destructive"
-              size="small"
-              onClick={() => deletePresidentMutation(president.id)}
+              onClick={() => deletePresidentMutation(president.id!)}
             >
-              Elimina
+              <Trash />
             </Button>
           </PresidentCard>
         ))}
