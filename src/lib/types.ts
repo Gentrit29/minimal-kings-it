@@ -1,16 +1,16 @@
 export type Role = "coach" | "staff" | "player";
-export type Status = "wildcard" | "draft" | "transfer" | null;
-export type RoleField = "ATT" | "CC" | "POR" | "DIF" | null;
+export type Status = "wildcard" | "draft" | "transfer";
+export type RoleField = "ATT" | "CC" | "POR" | "DIF";
 
 export interface President {
-  id: number;
+  id?: number;
   name: string;
   social_links: Record<string, string>;
   photo: string;
 }
 
 export interface Team {
-  id: number;
+  id?: number;
   name: string;
   logo: string;
   kl_link: string;
@@ -21,12 +21,12 @@ export interface Team {
 
 export interface Roster {
   id?: string;
-  created_at: string;
+  created_at?: string;
   name: string;
   team_id: number;
   role: Role;
   status?: Status;
-  role_field: RoleField;
+  role_field?: RoleField;
 }
 
 export interface SignIn {

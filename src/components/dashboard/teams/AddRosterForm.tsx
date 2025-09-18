@@ -1,11 +1,36 @@
-import { useEffect } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 
-import { Roster, Team } from "@/lib/types";
+import { z } from "zod";
+import { useLockBodyOverflow } from "@/hooks/ui";
+
+import { Roster } from "@/lib/types";
 
 import { useInsertRoster, useTeamsWithRosters, useUpdateRoster } from "@/hooks";
 
-import { IoIosCloseCircleOutline } from "react-icons/io";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
+
+import { Input } from "@/components/ui/input";
+
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+
+import { Button } from "@/components/ui/Button";
+
+import { CircleX } from "lucide-react";
+
+import { zodResolver } from "@hookform/resolvers/zod";
 
 interface AddRosterFormProps {
   onToggleRosterForm: (value: boolean) => void;
@@ -14,19 +39,53 @@ interface AddRosterFormProps {
   setSelectedRoster: (roster: Roster | null) => void;
 }
 
+const formRoster = z
+  .object({
+    name: z.string().min(2, {
+      message: "Nome è richiesto",
+    }),
+    team_id: z.number({ message: "Squadra richiesta" }),
+    role: z.enum(["coach", "staff", "player"], {
+      message: "Posizione richiesta",
+    }),
+    status: z.enum(["draft", "wildcard", "transfer"]).optional(),
+    role_field: z.enum(["ATT", "CC", "DIF", "POR"]).optional(),
+  })
+  .superRefine((data, ctx) => {
+    if (data.role === "player") {
+      if (!data.status) {
+        ctx.addIssue({
+          path: ["status"],
+          message: "Status richiesto",
+          code: "custom",
+        });
+      }
+      if (!data.role_field) {
+        ctx.addIssue({
+          path: ["role_field"],
+          message: "Ruolo richiesto",
+          code: "custom",
+        });
+      }
+    }
+  });
+
+type FormRosterType = z.infer<typeof formRoster>;
+
 export default function AddRosterForm({
   onToggleRosterForm,
   toggleRosterForm,
   roster,
   setSelectedRoster,
 }: AddRosterFormProps) {
-  const { register, handleSubmit, watch, reset } = useForm<Roster>({
+  const form = useForm<FormRosterType>({
+    resolver: zodResolver(formRoster),
     defaultValues: roster ?? {
       name: "",
       team_id: undefined,
       role: "staff",
-      status: null,
-      role_field: null,
+      status: undefined,
+      role_field: undefined,
     },
   });
 
@@ -35,102 +94,162 @@ export default function AddRosterForm({
   const { insertRosterMutation } = useInsertRoster();
   const { updateRosterMutation } = useUpdateRoster();
 
-  const onSubmit: SubmitHandler<Roster> = (data) => {
+  const onSubmit: SubmitHandler<FormRosterType> = (data) => {
     if (roster) {
       updateRosterMutation(data);
     } else {
       insertRosterMutation(data);
     }
 
-    reset();
+    form.reset();
     onToggleRosterForm(false);
   };
 
-  useEffect(() => {
-    if (toggleRosterForm) {
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "";
-    }
-
-    return () => {
-      document.body.style.overflow = "";
-    };
-  }, [toggleRosterForm]);
+  useLockBodyOverflow(toggleRosterForm);
 
   return (
-    <form
-      className="mx-5 flex w-full max-w-md flex-col gap-6 rounded-lg border border-neutral-700 bg-neutral-900 p-6"
-      onSubmit={handleSubmit(onSubmit)}
-    >
-      <div className="flex items-center justify-between">
-        <h2 className="flex items-center gap-2 rounded-lg border border-neutral-600 px-2 py-1 text-lg">
-          Roster Form
-        </h2>
-        <button
-          className="cursor-pointer rounded-lg transition-all hover:bg-neutral-800 hover:p-0.5"
+    <Form {...form}>
+      <form
+        className="border-border bg-card mx-5 flex w-full max-w-md flex-col gap-3 rounded-lg border p-5"
+        onSubmit={form.handleSubmit(onSubmit)}
+      >
+        <Button
+          variant="destructive"
+          className="ml-auto"
           onClick={() => {
-            reset();
+            form.reset();
             setSelectedRoster(null);
             onToggleRosterForm(false);
           }}
         >
-          <IoIosCloseCircleOutline className="h-8 w-8 text-red-500" />
-        </button>
-      </div>
-      <div className="flex flex-col gap-4">
-        <input
-          type="text"
-          placeholder="Name..."
-          className="w-full rounded-md border border-neutral-600 px-4 py-2 text-white placeholder-neutral-400 transition outline-none focus:border-yellow-400 focus:ring focus:ring-yellow-400/30"
-          {...register("name", { required: true })}
+          <CircleX />
+        </Button>
+
+        <FormField
+          control={form.control}
+          name="name"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Nome</FormLabel>
+              <FormControl>
+                <Input {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
         />
-        <select
-          className="w-full rounded-md border border-neutral-600 bg-neutral-900 px-4 py-2 text-white placeholder-neutral-400 transition outline-none focus:border-yellow-400 focus:ring focus:ring-yellow-400/30"
-          {...register("team_id", { required: true })}
-        >
-          {data?.map((team: Team) => (
-            <option key={team.id} value={team.id}>
-              {team.name}
-            </option>
-          ))}
-        </select>
-        <select
-          className="w-full rounded-md border border-neutral-600 bg-neutral-900 px-4 py-2 text-white placeholder-neutral-400 transition outline-none focus:border-yellow-400 focus:ring focus:ring-yellow-400/30"
-          {...register("role", { required: true })}
-        >
-          <option value="player">Player</option>
-          <option value="coach">Coach</option>
-          <option value="staff">Staff</option>
-        </select>
-        {watch("role") === "player" && (
+        <FormField
+          control={form.control}
+          name="team_id"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Team</FormLabel>
+              <FormControl>
+                <Select
+                  value={field.value ? String(field.value) : ""}
+                  onValueChange={(v) => field.onChange(Number(v))}
+                >
+                  <SelectTrigger className="w-full">
+                    <SelectValue placeholder="Seleziona Team" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {data?.map((team) => (
+                      <SelectItem key={team.id} value={String(team.id)}>
+                        {team.name}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="role"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Posizione</FormLabel>
+              <FormControl>
+                <Select value={field.value} onValueChange={field.onChange}>
+                  <SelectTrigger className="w-full">
+                    <SelectValue placeholder="Seleziona Posizione" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="coach">Coach</SelectItem>
+                    <SelectItem value="staff">Staff</SelectItem>
+                    <SelectItem value="player">Player</SelectItem>
+                  </SelectContent>
+                </Select>
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        {form.watch("role") === "player" && (
           <>
-            <select
-              className="w-full rounded-md border border-neutral-600 bg-neutral-900 px-4 py-2 text-white placeholder-neutral-400 transition outline-none focus:border-yellow-400 focus:ring focus:ring-yellow-400/30"
-              {...register("status", { required: true })}
-            >
-              <option value="draft">Draft</option>
-              <option value="wildcard">Wildcard</option>
-              <option value="transfer">Transfer</option>
-            </select>
-            <select
-              className="w-full rounded-md border border-neutral-600 bg-neutral-900 px-4 py-2 text-white placeholder-neutral-400 transition outline-none focus:border-yellow-400 focus:ring focus:ring-yellow-400/30"
-              {...register("role_field", { required: true })}
-            >
-              <option value="ATT">ATT</option>
-              <option value="CC">CC</option>
-              <option value="POR">POR</option>
-              <option value="DIF">DIF</option>
-            </select>
+            <FormField
+              control={form.control}
+              name="status"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Stato</FormLabel>
+                  <FormControl>
+                    <Select
+                      value={field.value ?? ""}
+                      onValueChange={(v) =>
+                        field.onChange(v === "" ? undefined : v)
+                      }
+                    >
+                      <SelectTrigger className="w-full">
+                        <SelectValue placeholder="Seleziona Stato" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="wildcard">Wildcard</SelectItem>
+                        <SelectItem value="draft">Draft</SelectItem>
+                        <SelectItem value="transfer">Transfer</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="role_field"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Ruolo</FormLabel>
+                  <FormControl>
+                    <Select
+                      value={field.value ?? ""}
+                      onValueChange={(v) =>
+                        field.onChange(v === "" ? undefined : v)
+                      }
+                    >
+                      <SelectTrigger className="w-full">
+                        <SelectValue placeholder="Seleziona Ruolo" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="ATT">ATT</SelectItem>
+                        <SelectItem value="CC">CC</SelectItem>
+                        <SelectItem value="DIF">DIF</SelectItem>
+                        <SelectItem value="POR">POR</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
           </>
         )}
-      </div>
-      <button
-        type="submit"
-        className="mt-6 w-full cursor-pointer rounded-lg bg-yellow-500 py-1.5 text-white transition-transform duration-300 hover:scale-105 hover:bg-yellow-600 focus:ring-2 focus:ring-neutral-500 focus:outline-none"
-      >
-        Invia
-      </button>
-    </form>
+        <Button role="submit" variant="default">
+          Invia
+        </Button>
+      </form>
+    </Form>
   );
 }

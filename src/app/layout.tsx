@@ -1,13 +1,13 @@
 import type { Metadata } from "next";
 import { Roboto } from "next/font/google";
 import "./globals.css";
+import { ThemeProvider } from "@/components/theme-provider";
 
 import ReactQueryProvider from "@/providers/ReactQueryProvider";
 
 import { Toaster } from "react-hot-toast";
 
 const roboto = Roboto({
-  variable: "--font-roboto",
   subsets: ["latin"],
 });
 
@@ -23,29 +23,36 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="it">
-      <body className={roboto.variable}>
-        <Toaster
-          position="top-center"
-          gutter={12}
-          containerStyle={{ margin: "8px" }}
-          toastOptions={{
-            success: {
-              duration: 1000,
-            },
-            error: {
-              duration: 2000,
-            },
-            style: {
-              background: "#171717",
-              border: "1px solid #404040",
-              color: "#fff",
-              fontSize: "16px",
-              maxWidth: "500px",
-            },
-          }}
-        />
-        <ReactQueryProvider>{children}</ReactQueryProvider>
+    <html lang="it" suppressHydrationWarning>
+      <body className={roboto.className}>
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+        >
+          <Toaster
+            position="top-center"
+            gutter={12}
+            containerStyle={{ margin: "8px" }}
+            toastOptions={{
+              success: {
+                duration: 1000,
+              },
+              error: {
+                duration: 2000,
+              },
+              style: {
+                background: "var(--background)",
+                border: "1px solid var(--border)",
+                color: "var(--foreground)",
+                fontSize: "16px",
+                maxWidth: "500px",
+              },
+            }}
+          />
+          <ReactQueryProvider>{children}</ReactQueryProvider>
+        </ThemeProvider>
       </body>
     </html>
   );
