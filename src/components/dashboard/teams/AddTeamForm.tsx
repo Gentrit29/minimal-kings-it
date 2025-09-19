@@ -71,7 +71,7 @@ export default function AddTeamForm({
 
   const onSubmit: SubmitHandler<FormTeamType> = (data) => {
     if (team) {
-      updateTeamMutation(data);
+      updateTeamMutation({ ...data, id: team.id });
     } else {
       insertTeamMutation(data);
     }

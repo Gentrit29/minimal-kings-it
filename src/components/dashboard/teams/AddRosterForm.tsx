@@ -80,13 +80,19 @@ export default function AddRosterForm({
 }: AddRosterFormProps) {
   const form = useForm<FormRosterType>({
     resolver: zodResolver(formRoster),
-    defaultValues: roster ?? {
-      name: "",
-      team_id: undefined,
-      role: "staff",
-      status: undefined,
-      role_field: undefined,
-    },
+    defaultValues: roster
+      ? {
+          ...roster,
+          status: roster.status ?? undefined,
+          role_field: roster.role_field ?? undefined,
+        }
+      : {
+          name: "",
+          team_id: undefined,
+          role: "staff",
+          status: undefined,
+          role_field: undefined,
+        },
   });
 
   const { data } = useTeamsWithRosters();
@@ -96,7 +102,7 @@ export default function AddRosterForm({
 
   const onSubmit: SubmitHandler<FormRosterType> = (data) => {
     if (roster) {
-      updateRosterMutation(data);
+      updateRosterMutation({ ...data, id: roster.id });
     } else {
       insertRosterMutation(data);
     }

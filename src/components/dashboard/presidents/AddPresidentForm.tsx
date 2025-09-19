@@ -55,7 +55,7 @@ export default function AddPresidentForm({
     resolver: zodResolver(formPresident),
     defaultValues: president ?? {
       name: "",
-      photo: undefined,
+      photo: "",
       social_links: {
         twitch: "",
         instagram: "",
@@ -68,7 +68,7 @@ export default function AddPresidentForm({
 
   const onSubmit: SubmitHandler<FormPresidentType> = (data) => {
     if (president) {
-      updatePresidentMutation(data);
+      updatePresidentMutation({ ...data, id: president.id });
     } else {
       insertPresidentMutation(data);
     }
