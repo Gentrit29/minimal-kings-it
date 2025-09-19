@@ -110,24 +110,15 @@
   --color-sidebar-ring: var(--sidebar-ring);
 }
 
-@layer base {
-  * {
-    @apply border-border outline-ring/50;
-  }
-  body {
-    background-image:
-      radial-gradient(
-        ellipse at 0% 0%,
-        var(--color-primary) 0%,
-        transparent 50%
-      ),
-      radial-gradient(
-        ellipse at 100% 100%,
-        var(--color-primary) 0%,
-        transparent 60%
-      );
-    background-repeat: no-repeat;
-    background-size: cover;
-    color: var(--foreground);
-  }
+body {
+  background-image:
+    radial-gradient(ellipse at 0% 0%, var(--color-primary) 0%, transparent 50%),
+    radial-gradient(
+      ellipse at 100% 100%,
+      var(--color-primary) 0%,
+      transparent 60%
+    );
+  background-repeat: no-repeat;
+  background-size: cover;
+  color: var(--foreground);
 }
