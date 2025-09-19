@@ -24,7 +24,7 @@ export default function PresidentCard({
   children,
 }: PresidentCardProps) {
   return (
-    <div className="group border-border hover:border-ring bg-card text-card-foreground flex max-h-[350px] w-full flex-col items-center justify-between space-y-6 rounded-md border p-4 transition-colors duration-300">
+    <div className="group border-border hover:border-ring bg-card text-card-foreground flex max-h-[450px] w-full flex-col items-center justify-between space-y-6 rounded-md border p-4 transition-colors duration-300">
       <Image
         src={president.photo}
         alt={president.name}
