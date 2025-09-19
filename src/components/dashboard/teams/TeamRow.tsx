@@ -41,7 +41,7 @@ export default function TeamRow({
           </Button>
           <Button
             variant="destructive"
-            onClick={() => deleteTeamMutation(team.id)}
+            onClick={() => deleteTeamMutation(team.id!)}
           >
             <Trash />
           </Button>
