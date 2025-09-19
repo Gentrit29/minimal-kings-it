@@ -1,16 +1,17 @@
 "use client";
 
-import Header from "@/components/shared/Header";
+import TableSkeleton from "@/components/TableSkeleton";
 import TeamTable from "@/components/teams/TeamTable";
 import { useTeamsWithRosters } from "@/hooks";
 
 export default function Teams() {
-  const { data } = useTeamsWithRosters();
+  const { data, isLoading } = useTeamsWithRosters();
+
+  if (isLoading) return <TableSkeleton />;
 
   return (
-    <>
-      <Header />
+    <main>
       <TeamTable teams={data ?? []} />
-    </>
+    </main>
   );
 }
