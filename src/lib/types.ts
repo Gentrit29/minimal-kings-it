@@ -7,6 +7,7 @@ export interface President {
   name: string;
   social_links: Record<string, string>;
   photo: string;
+  teams?: Team[];
 }
 
 export interface Team {
