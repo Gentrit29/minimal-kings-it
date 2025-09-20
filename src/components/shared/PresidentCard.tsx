@@ -25,19 +25,29 @@ export default function PresidentCard({
 }: PresidentCardProps) {
   return (
     <div className="group border-border hover:border-ring bg-card text-card-foreground flex max-h-[450px] w-full flex-col items-center justify-between space-y-6 rounded-md border p-4 transition-colors duration-300">
-      <Image
-        src={president.photo}
-        alt={president.name}
-        width={400}
-        height={400}
-        className="border-border rounded-md border transition-transform duration-300 group-hover:scale-105"
-      />
-      <div className="flex flex-col items-center gap-3 text-sm sm:text-lg">
+      <div className="border-border relative rounded-md border transition-transform duration-300 group-hover:scale-105">
+        <Image
+          src={president.photo}
+          alt={president.name}
+          width={400}
+          height={400}
+        />
+        {president.teams?.[0] && (
+          <Image
+            src={president.teams[0].logo}
+            alt={president.teams[0].name}
+            width={50}
+            height={50}
+            className="absolute top-0 right-0"
+          />
+        )}
+      </div>
+      <div className="flex w-full flex-col items-center gap-3 text-sm sm:text-lg">
         <h2 className="flex items-center gap-2 text-center">
           <Crown className="text-primary hidden sm:flex" />
           {president.name}
         </h2>
-        <div className="flex w-full justify-evenly">
+        <div className="flex w-full items-center justify-center gap-4">
           {president.social_links &&
             Object.entries(president.social_links).map(([platform, url]) => (
               <a
