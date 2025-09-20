@@ -4,7 +4,7 @@ import { President, Roster, SignIn, Team } from "@/lib/types";
 export async function getPresidents() {
   const { data: presidents, error } = await supabase
     .from("presidents")
-    .select("*");
+    .select("*, teams(*)");
 
   if (error) throw new Error(error.message);
 
