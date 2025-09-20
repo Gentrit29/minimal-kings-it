@@ -10,7 +10,7 @@ export default function Teams() {
   if (isLoading) return <TableSkeleton />;
 
   return (
-    <main>
+    <main className="px-8 py-10">
       <TeamTable teams={data ?? []} />
     </main>
   );
