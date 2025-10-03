@@ -5,7 +5,11 @@ import { zodResolver } from "@hookform/resolvers/zod";
 
 import { President } from "@/lib/types";
 
-import { useInsertPresident, useUpdatePresident } from "@/hooks";
+import {
+  useInsertPresident,
+  useUpdatePresident,
+  useUploadPresidentPhoto,
+} from "@/hooks";
 
 import {
   Form,
@@ -35,7 +39,9 @@ const formPresident = z.object({
   name: z.string().min(2, {
     message: "Nome è richiesto",
   }),
-  photo: z.string({ message: "Foto è richiesta" }),
+  photo: z
+    .union([z.instanceof(File), z.string()])
+    .refine((val) => !!val, { message: "Foto è richiesta" }),
   social_links: z.object({
     twitch: z.string().optional(),
     instagram: z.string().optional(),
@@ -65,12 +71,47 @@ export default function AddPresidentForm({
   });
   const { insertPresidentMutation } = useInsertPresident();
   const { updatePresidentMutation } = useUpdatePresident();
+  const { uploadPresidentPhotoMutation } = useUploadPresidentPhoto();
 
-  const onSubmit: SubmitHandler<FormPresidentType> = (data) => {
-    if (president) {
-      updatePresidentMutation({ ...data, id: president.id });
+  const onSubmit: SubmitHandler<FormPresidentType> = async (data) => {
+    let photoUrl: string;
+
+    // insert new president with empty photo
+    if (!president) {
+      const newPresident = await insertPresidentMutation({
+        ...data,
+        photo: "",
+      });
+
+      // check for the photo type and if the president has been created
+      if (data.photo instanceof File && newPresident.id != null) {
+        // upload the photo to the bucket with the id of the new president
+        photoUrl = await uploadPresidentPhotoMutation({
+          file: data.photo,
+          presidentId: newPresident.id,
+        });
+      } else {
+        photoUrl = typeof data.photo === "string" ? data.photo : "";
+      }
+
+      // update the new president with the uploaded photo URL
+      await updatePresidentMutation({
+        ...data,
+        id: newPresident.id,
+        photo: photoUrl,
+      });
     } else {
-      insertPresidentMutation(data);
+      //edit mode: update president fields, replace photo if a new file is uploaded
+      if (data.photo instanceof File && president.id) {
+        photoUrl = await uploadPresidentPhotoMutation({
+          file: data.photo,
+          presidentId: president.id,
+        });
+      } else {
+        photoUrl = typeof data.photo === "string" ? data.photo : "";
+      }
+      // update existing president with new data
+      updatePresidentMutation({ ...data, id: president.id, photo: photoUrl });
     }
 
     form.reset();
@@ -117,7 +158,10 @@ export default function AddPresidentForm({
             <FormItem>
               <FormLabel>Foto Presidente</FormLabel>
               <FormControl>
-                <Input {...field} />
+                <Input
+                  type="file"
+                  onChange={(e) => field.onChange(e.target.files?.[0] ?? null)}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
