@@ -26,12 +26,14 @@ export default function PresidentCard({
   return (
     <div className="group border-border hover:border-ring bg-card text-card-foreground flex max-h-[450px] w-full flex-col items-center justify-between space-y-6 rounded-md border p-4 transition-colors duration-300">
       <div className="border-border relative rounded-md border transition-transform duration-300 group-hover:scale-105">
-        <Image
-          src={president.photo}
-          alt={president.name}
-          width={400}
-          height={400}
-        />
+        {president.photo && (
+          <Image
+            src={`${president.photo}?t=${Date.now()}`}
+            alt={president.name}
+            width={400}
+            height={400}
+          />
+        )}
         {president.teams?.[0] && (
           <Image
             src={president.teams[0].logo}
