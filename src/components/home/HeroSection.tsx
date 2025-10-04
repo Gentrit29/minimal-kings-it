@@ -22,7 +22,10 @@ export default function HeroSection() {
             <Link href="/teams">Squadre</Link>
           </Button>
           <Button asChild variant="default">
-            <Link href="/players">Giocatori</Link>
+            <Link href="/presidents">Presidenti</Link>
+          </Button>
+          <Button asChild variant="default">
+            <Link href="/rosters">Rosters</Link>
           </Button>
         </div>
       </div>
