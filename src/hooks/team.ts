@@ -3,6 +3,7 @@ import {
   getTeamsWithRosters,
   insertTeam,
   updateTeam,
+  uploadTeamLogo,
 } from "@/lib/actions";
 import { Team } from "@/lib/types";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
@@ -19,7 +20,7 @@ export function useTeamsWithRosters() {
 
 export function useInsertTeam() {
   const queryClient = useQueryClient();
-  const { mutate: insertTeamMutation } = useMutation({
+  const { mutateAsync: insertTeamMutation } = useMutation({
     mutationFn: (team: Team) => insertTeam(team),
     onSuccess: () => {
       toast.success("Team inserito con successo!");
@@ -51,7 +52,7 @@ export function useDeleteTeam() {
 
 export function useUpdateTeam() {
   const queryClient = useQueryClient();
-  const { mutate: updateTeamMutation } = useMutation({
+  const { mutateAsync: updateTeamMutation } = useMutation({
     mutationFn: (team: Team) => updateTeam(team),
     onSuccess: () => {
       toast.success("Dati aggiornati con successo!");
@@ -63,4 +64,21 @@ export function useUpdateTeam() {
   });
 
   return { updateTeamMutation };
+}
+
+export function useUploadTeamLogo() {
+  const queryClient = useQueryClient();
+  const { mutateAsync: uploadTeamLogoMutation } = useMutation({
+    mutationFn: ({ file, teamId }: { file: File; teamId: number }) =>
+      uploadTeamLogo(file, teamId),
+    onSuccess: () => {
+      toast.success("Logo caricato con successo!");
+      queryClient.invalidateQueries({ queryKey: ["teamsWithRoster"] });
+    },
+    onError: () => {
+      toast.error("Impossibile caricare il logo. Riprova.");
+    },
+  });
+
+  return { uploadTeamLogoMutation };
 }

@@ -85,7 +85,11 @@ export async function getTeamsWithRosters(): Promise<Team[]> {
 }
 
 export async function insertTeam(team: Team): Promise<Team> {
-  const { data, error } = await supabase.from("teams").insert(team);
+  const { data, error } = await supabase
+    .from("teams")
+    .insert([team])
+    .select()
+    .single();
 
   if (error) throw new Error(error.message);
 
@@ -112,6 +116,30 @@ export async function updateTeam(team: Team): Promise<Team> {
   if (error) throw new Error(error.message);
 
   return data;
+}
+
+export async function uploadTeamLogo(
+  file: File,
+  teamId: number,
+): Promise<string> {
+  const filePath = `teams/${teamId}`;
+
+  if (teamId) {
+    await supabase.storage.from("teams-bucket").remove([filePath]);
+  }
+
+  const { error } = await supabase.storage
+    .from("teams-bucket")
+    .upload(filePath, file, {
+      cacheControl: "no-cache",
+      upsert: false,
+    });
+
+  if (error) throw new Error(error.message);
+
+  const { data } = supabase.storage.from("teams-bucket").getPublicUrl(filePath);
+
+  return data.publicUrl;
 }
 
 export async function insertRoster(roster: Roster): Promise<Roster> {
