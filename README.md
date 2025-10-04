@@ -26,7 +26,7 @@ This project aims to deliver fast discovery of Italian teams and newly added pla
 - **Styling:** Tailwind CSS with custom components
 - **Deployment:** Vercel
 
-# Dashboard Screenshot
+## Dashboard Screenshot
 
 |                             Teams & Rosters                             |                            Presidents                            |
 | :---------------------------------------------------------------------: | :--------------------------------------------------------------: |
