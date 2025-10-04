@@ -26,6 +26,12 @@ This project aims to deliver fast discovery of Italian teams and newly added pla
 - **Styling:** Tailwind CSS with custom components
 - **Deployment:** Vercel
 
+# Dashboard Screenshot
+
+|                             Teams & Rosters                             |                            Presidents                            |
+| :---------------------------------------------------------------------: | :--------------------------------------------------------------: |
+| ![Team & Rosters](/public/dashboard-images/dashboard-teams-rosters.png) | ![Presidents](/public/dashboard-images/dashboard-presidents.png) |
+
 ## Environment Variables
 
 Add the following to your `.env.local` file:
