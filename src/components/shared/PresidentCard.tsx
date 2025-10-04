@@ -36,7 +36,7 @@ export default function PresidentCard({
         )}
         {president.teams?.[0] && (
           <Image
-            src={president.teams[0].logo}
+            src={`${president.teams[0].logo}#t=${Date.now()}`}
             alt={president.teams[0].name}
             width={50}
             height={50}
