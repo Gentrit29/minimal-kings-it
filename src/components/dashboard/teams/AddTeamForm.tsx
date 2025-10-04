@@ -5,7 +5,12 @@ import { z } from "zod";
 
 import { Team } from "@/lib/types";
 
-import { useInsertTeam, usePresidents, useUpdateTeam } from "@/hooks";
+import {
+  useInsertTeam,
+  usePresidents,
+  useUpdateTeam,
+  useUploadTeamLogo,
+} from "@/hooks";
 
 import {
   Form,
@@ -44,7 +49,9 @@ const formTeam = z.object({
     message: "Nome è richiesto",
   }),
   president_id: z.number({ message: "Presidente è richiesto" }),
-  logo: z.string().min(2, { message: "Foto richiesta" }),
+  logo: z
+    .union([z.instanceof(File), z.string()])
+    .refine((val) => !!val, { message: "Logo è richiesto" }),
   kl_link: z.url({ message: "URL richiesto" }),
 });
 
@@ -67,13 +74,48 @@ export default function AddTeamForm({
   });
   const { insertTeamMutation } = useInsertTeam();
   const { updateTeamMutation } = useUpdateTeam();
+  const { uploadTeamLogoMutation } = useUploadTeamLogo();
   const { data } = usePresidents();
 
-  const onSubmit: SubmitHandler<FormTeamType> = (data) => {
-    if (team) {
-      updateTeamMutation({ ...data, id: team.id });
+  const onSubmit: SubmitHandler<FormTeamType> = async (data) => {
+    let logoUrl: string;
+
+    // insert new team with empty logo
+    if (!team) {
+      const newTeam = await insertTeamMutation({
+        ...data,
+        logo: "",
+      });
+
+      // check for the logo type and if the team has been created
+      if (data.logo instanceof File && newTeam.id != null) {
+        // upload the logo to the bucket with the id of the new team
+        logoUrl = await uploadTeamLogoMutation({
+          file: data.logo,
+          teamId: newTeam.id,
+        });
+      } else {
+        logoUrl = typeof data.logo === "string" ? data.logo : "";
+      }
+
+      // update the new team with the uploaded logo URL
+      await updateTeamMutation({
+        ...data,
+        id: newTeam.id,
+        logo: logoUrl,
+      });
     } else {
-      insertTeamMutation(data);
+      //edit mode: update team fields, replace logo if a new file is uploaded
+      if (data.logo instanceof File && team.id) {
+        logoUrl = await uploadTeamLogoMutation({
+          file: data.logo,
+          teamId: team.id,
+        });
+      } else {
+        logoUrl = typeof data.logo === "string" ? data.logo : "";
+      }
+      // update existing team with new data
+      updateTeamMutation({ ...data, id: team.id, logo: logoUrl });
     }
 
     form.reset();
@@ -149,7 +191,10 @@ export default function AddTeamForm({
             <FormItem>
               <FormLabel>Link Logo</FormLabel>
               <FormControl>
-                <Input {...field} />
+                <Input
+                  type="file"
+                  onChange={(e) => field.onChange(e.target.files?.[0] ?? null)}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
