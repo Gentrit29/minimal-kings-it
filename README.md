@@ -39,6 +39,7 @@ Add the following to your `.env.local` file:
 ```env
 NEXT_PUBLIC_SUPABASE_URL=<URL>
 NEXT_PUBLIC_SUPABASE_KEY=<KEY>
+NEXT_PUBLIC_SUPABASE_HOSTNAME=<URL>
 ```
 
 ## Run Locally
