@@ -50,6 +50,9 @@ export default function Header() {
           <Button asChild variant="ghost">
             <Link href="/presidents">Presidenti</Link>
           </Button>
+          <Button asChild variant="ghost">
+            <Link href="/rosters">Rosters</Link>
+          </Button>
           {isAuthenticated && (
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
@@ -104,6 +107,9 @@ export default function Header() {
             </Button>
             <Button asChild variant="ghost">
               <Link href="/presidents">Presidenti</Link>
+            </Button>
+            <Button asChild variant="ghost">
+              <Link href="/rosters">Rosters</Link>
             </Button>
             {isAuthenticated && (
               <div className="w-40">
