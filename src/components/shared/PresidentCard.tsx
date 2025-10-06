@@ -32,6 +32,7 @@ export default function PresidentCard({
             alt={president.name}
             width={400}
             height={400}
+            className="max-h-[150px]"
           />
         )}
         {president.teams?.[0] && (
