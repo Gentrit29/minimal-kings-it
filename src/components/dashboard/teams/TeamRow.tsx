@@ -28,7 +28,7 @@ export default function TeamRow({
         <div className="flex flex-col items-start space-y-2">
           <span className="flex items-center gap-2">
             <Image
-              src={`${team.logo}#t=${Date.now()}`}
+              src={`${team.logo}?v=${Date.now()}`}
               alt={team.name}
               width={35}
               height={35}

@@ -28,7 +28,7 @@ export default function PresidentCard({
       <div className="border-border relative rounded-md border transition-transform duration-300 group-hover:scale-105">
         {president.photo && (
           <Image
-            src={`${president.photo}#t=${Date.now()}`}
+            src={`${president.photo}?v=${Date.now()}`}
             alt={president.name}
             width={400}
             height={400}
@@ -36,7 +36,7 @@ export default function PresidentCard({
         )}
         {president.teams?.[0] && (
           <Image
-            src={`${president.teams[0].logo}#t=${Date.now()}`}
+            src={`${president.teams[0].logo}?v=${Date.now()}`}
             alt={president.teams[0].name}
             width={50}
             height={50}

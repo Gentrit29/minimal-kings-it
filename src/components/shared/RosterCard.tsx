@@ -28,7 +28,12 @@ export default function RosterCard({ team, roster }: CardProps) {
         </p>
       </div>
       <div className="flex items-center gap-2">
-        <Image src={team.logo} alt={team.name} width={32} height={32} />
+        <Image
+          src={`${team.logo}?v=${Date.now()}`}
+          alt={team.name}
+          width={32}
+          height={32}
+        />
         <span className="text-sm">{team.name}</span>
       </div>
     </div>

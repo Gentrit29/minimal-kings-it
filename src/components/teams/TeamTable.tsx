@@ -20,7 +20,7 @@ export default function TeamTable({ teams }: TeamTableProps) {
           <div className="flex items-center justify-between p-3">
             <div className="flex items-center gap-2">
               <Image
-                src={`${team.logo}#t=${Date.now()}`}
+                src={`${team.logo}?v=${Date.now()}`}
                 alt={team.name}
                 width={50}
                 height={50}
