@@ -176,6 +176,26 @@ export async function updateRoster(roster: Roster): Promise<Roster> {
   return data;
 }
 
+export async function getFilteredRoster(
+  teamId?: number,
+  role?: string,
+  status?: string,
+  roleField?: string,
+): Promise<(Roster & { teams: Team })[]> {
+  let query = supabase.from("roster").select("*, teams(*)");
+
+  if (teamId) query = query.eq("team_id", teamId);
+  if (role) query = query.eq("role", role);
+  if (role === "player" && status) query = query.eq("status", status);
+  if (role === "player" && roleField) query = query.eq("role_field", roleField);
+
+  const { data, error } = await query.order("role_order", { ascending: true });
+
+  if (error) throw new Error(error.message);
+
+  return data;
+}
+
 export async function signIn(credentials: SignIn) {
   const { data, error } = await supabase.auth.signInWithPassword(credentials);
 

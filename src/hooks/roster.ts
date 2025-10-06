@@ -1,6 +1,11 @@
-import { deleteRosterById, insertRoster, updateRoster } from "@/lib/actions";
+import {
+  deleteRosterById,
+  getFilteredRoster,
+  insertRoster,
+  updateRoster,
+} from "@/lib/actions";
 import { Roster } from "@/lib/types";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import toast from "react-hot-toast";
 
 export function useInsertRoster() {
@@ -49,4 +54,18 @@ export function useUpdateRoster() {
   });
 
   return { updateRosterMutation };
+}
+
+export function useFilteredRoster(
+  teamId?: number,
+  role?: string,
+  status?: string,
+  roleField?: string,
+) {
+  const { data, isLoading } = useQuery({
+    queryKey: ["filteredRoster", teamId, role, status, roleField],
+    queryFn: () => getFilteredRoster(teamId, role, status, roleField),
+  });
+
+  return { data, isLoading };
 }
