@@ -24,6 +24,10 @@ export default function RosterCard({ team, roster }: CardProps) {
         <p className="text-muted-foreground text-sm">{roster.role}</p>
         <div className="bg-border h-4 w-0.5 rounded-md" />
         <p className="text-muted-foreground text-sm">
+          {roster.status || "----"}
+        </p>
+        <div className="bg-border h-4 w-0.5 rounded-md" />
+        <p className="text-muted-foreground text-sm">
           {roster.role_field || "----"}
         </p>
       </div>
