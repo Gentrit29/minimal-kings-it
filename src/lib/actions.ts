@@ -61,7 +61,7 @@ export async function uploadPresidentPhoto(
     .from("presidents-bucket")
     .upload(filePath, file, {
       cacheControl: "no-cache",
-      upsert: false,
+      upsert: true,
     });
 
   if (error) throw new Error(error.message);
