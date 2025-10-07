@@ -35,10 +35,10 @@ export default function PresidentCard({
             className="max-h-[150px]"
           />
         )}
-        {president.teams?.[0] && (
+        {president.teams && (
           <Image
-            src={`${president.teams[0].logo}?v=${Date.now()}`}
-            alt={president.teams[0].name}
+            src={`${president.teams.logo}?v=${Date.now()}`}
+            alt={president.teams.name}
             width={50}
             height={50}
             className="absolute top-0 right-0"
