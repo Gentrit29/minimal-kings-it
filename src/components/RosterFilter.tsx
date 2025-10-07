@@ -34,7 +34,7 @@ export default function RosterFilter({
   const { teamId, role, status, role_field } = filters;
 
   return (
-    <div className="bg-card border-border mb-5 flex gap-4 rounded-md border p-2">
+    <div className="bg-card border-border mb-5 flex flex-wrap gap-4 rounded-md border p-2">
       <Select
         value={teamId?.toString()}
         onValueChange={(val) => onChange({ teamId: Number(val) })}
