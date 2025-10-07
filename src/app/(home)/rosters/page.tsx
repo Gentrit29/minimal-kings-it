@@ -42,9 +42,15 @@ export default function Rosters() {
         }
       />
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
-        {data?.map((r: RosterWithTeam) => (
-          <RosterCard key={r.id} roster={r} team={r.teams} />
-        ))}
+        {data?.length ? (
+          data?.map((r: RosterWithTeam) => (
+            <RosterCard key={r.id} roster={r} team={r.teams} />
+          ))
+        ) : (
+          <div className="bg-card border-border text-muted-foreground col-span-full flex items-center justify-center rounded-md border p-6 text-sm">
+            Nessun roster disponibile al momento
+          </div>
+        )}
       </div>
     </main>
   );
