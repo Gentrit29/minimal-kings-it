@@ -17,6 +17,7 @@ This project aims to deliver fast discovery of Italian teams and newly added pla
 - Responsive design: desktop, tablet, and mobile
 - Admin login: access the dashboard to manage teams, presidents, and rosters
 - Newly added players are marked with a "New" label
+- Content Language: Italian (I will add ENG in future maybe)
 
 ## Tech Stack
 
