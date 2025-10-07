@@ -115,7 +115,7 @@ export default function AddTeamForm({
         logoUrl = typeof data.logo === "string" ? data.logo : "";
       }
       // update existing team with new data
-      updateTeamMutation({ ...data, id: team.id, logo: logoUrl });
+      await updateTeamMutation({ ...data, id: team.id, logo: logoUrl });
     }
 
     form.reset();

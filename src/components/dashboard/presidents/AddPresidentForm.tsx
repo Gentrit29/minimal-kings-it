@@ -111,7 +111,11 @@ export default function AddPresidentForm({
         photoUrl = typeof data.photo === "string" ? data.photo : "";
       }
       // update existing president with new data
-      updatePresidentMutation({ ...data, id: president.id, photo: photoUrl });
+      await updatePresidentMutation({
+        ...data,
+        id: president.id,
+        photo: photoUrl,
+      });
     }
 
     form.reset();
