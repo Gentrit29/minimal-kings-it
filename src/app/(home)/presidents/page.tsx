@@ -11,7 +11,7 @@ export default function Presidents() {
   if (isLoading) return <PresidentSkeleton isDashboard={false} />;
   return (
     <main className="px-8 py-10">
-      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-6">
         {data?.map((p: President) => (
           <PresidentCard key={p.id} president={p} />
         ))}

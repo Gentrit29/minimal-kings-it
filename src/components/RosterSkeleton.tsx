@@ -2,7 +2,7 @@ import { Skeleton } from "./ui/skeleton";
 
 export default function RosterSkeleton() {
   return (
-    <div className="grid grid-cols-1 gap-4 px-8 py-10 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
+    <div className="grid grid-cols-1 gap-4 px-8 py-10 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6">
       {Array.from({ length: 12 }).map((_, i) => (
         <Skeleton
           key={i}
