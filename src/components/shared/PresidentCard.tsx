@@ -47,7 +47,7 @@ export default function PresidentCard({
       </div>
       <div className="flex w-full flex-col items-center gap-3 text-sm sm:text-lg">
         <h2 className="flex items-center gap-2 text-center">
-          <Crown className="text-primary hidden sm:flex" />
+          <Crown className="text-primary h-5 w-5" />
           {president.name}
         </h2>
         <div className="flex w-full items-center justify-center gap-4">
