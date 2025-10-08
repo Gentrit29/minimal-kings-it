@@ -28,7 +28,7 @@ import { CircleX } from "lucide-react";
 
 import { useLockBodyOverflow } from "@/hooks/ui";
 
-interface AddTeamFormProps {
+interface AddPresidentFormProps {
   onTogglePresidentForm: (value: boolean) => void;
   togglePresidentForm: boolean;
   president: President | null;
@@ -56,7 +56,7 @@ export default function AddPresidentForm({
   togglePresidentForm,
   president,
   setSelectedPresident,
-}: AddTeamFormProps) {
+}: AddPresidentFormProps) {
   const form = useForm<FormPresidentType>({
     resolver: zodResolver(formPresident),
     defaultValues: president ?? {
