@@ -1,5 +1,12 @@
 import supabase from "@/providers/supabase";
-import { President, Roster, SignIn, Team } from "@/lib/types";
+import {
+  President,
+  Roster,
+  SignIn,
+  Split,
+  SplitWithWinner,
+  Team,
+} from "@/lib/types";
 
 export async function getPresidents(): Promise<President[]> {
   const { data: presidents, error } = await supabase
@@ -73,11 +80,61 @@ export async function uploadPresidentPhoto(
   return data.publicUrl;
 }
 
-export async function getTeamsWithRosters(): Promise<Team[]> {
+export async function getSplits(): Promise<SplitWithWinner[]> {
   const { data: teams, error } = await supabase
+    .from("splits")
+    .select("*, winner_team_id(id, name)");
+
+  if (error) throw new Error(error.message);
+
+  return teams;
+}
+
+export async function insertSplit(split: Split): Promise<Split> {
+  const { data, error } = await supabase
+    .from("splits")
+    .insert([split])
+    .select()
+    .single();
+
+  if (error) throw new Error(error.message);
+
+  if (!data) throw new Error("No data returned after insert.");
+
+  return data;
+}
+
+export async function deleteSplitById(id: number): Promise<void> {
+  const { error } = await supabase.from("splits").delete().eq("id", id);
+
+  if (error) throw new Error(error.message);
+}
+
+export async function updateSplit(split: Split): Promise<Split> {
+  const { id, ...fields } = split;
+  const { data, error } = await supabase
+    .from("splits")
+    .update(fields)
+    .eq("id", id)
+    .select()
+    .single();
+
+  if (error) throw new Error(error.message);
+
+  return data;
+}
+
+export async function getTeamsWithRosters(split_id?: number): Promise<Team[]> {
+  let query = supabase
     .from("teams")
     .select("*, roster(*), president:president_id(*)")
     .order("role_order", { referencedTable: "roster" });
+
+  if (split_id) {
+    query = query.eq("roster.split_id", split_id);
+  }
+
+  const { data: teams, error } = await query;
 
   if (error) throw new Error(error.message);
 
@@ -180,14 +237,17 @@ export async function getFilteredRoster(
   teamId?: number,
   role?: string,
   status?: string,
-  roleField?: string,
+  role_field?: string,
+  split_id?: number,
 ): Promise<(Roster & { teams: Team })[]> {
   let query = supabase.from("roster").select("*, teams(*)");
 
   if (teamId) query = query.eq("team_id", teamId);
   if (role) query = query.eq("role", role);
   if (role === "player" && status) query = query.eq("status", status);
-  if (role === "player" && roleField) query = query.eq("role_field", roleField);
+  if (role === "player" && role_field)
+    query = query.eq("role_field", role_field);
+  if (split_id) query = query.eq("split_id", split_id);
 
   const { data, error } = await query.order("role_order", { ascending: true });
 
