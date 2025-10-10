@@ -140,7 +140,11 @@ export default function Header() {
                         Squadre
                       </Link>
                     </Button>
-                    <Button asChild variant="ghost">
+                    <Button
+                      asChild
+                      variant="ghost"
+                      className="rounded-none border-b border-neutral-700"
+                    >
                       <Link href="/dashboard/presidents" className="py-1">
                         Presidenti
                       </Link>
