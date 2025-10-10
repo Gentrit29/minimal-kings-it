@@ -28,6 +28,19 @@ export interface Roster {
   role: Role;
   status?: Status;
   role_field?: RoleField;
+  split_id?: number;
+}
+
+export interface Split {
+  id?: number;
+  name: string;
+  start_date?: string;
+  end_date?: string;
+  winner_team_id?: number;
+}
+
+export interface SplitWithWinner extends Omit<Split, "winner_team_id"> {
+  winner_team_id?: { id: number; name: string };
 }
 
 export interface SignIn {
