@@ -24,7 +24,7 @@ export default function SplitSelect({
   className,
 }: SplitSelectProps) {
   return (
-    <div className={className}>
+    <div className={`${className} bg-card rounded-md`}>
       <Select
         value={value?.toString()}
         onValueChange={(val) => onChange(Number(val))}
