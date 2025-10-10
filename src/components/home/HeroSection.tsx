@@ -17,7 +17,7 @@ export default function HeroSection() {
           I tempi di aggiornamento delle squadre variano in base alla mia
           disponibilità.
         </p>
-        <div className="flex gap-3 sm:gap-4">
+        <div className="flex flex-wrap items-center justify-center gap-3 sm:gap-4">
           <Button asChild variant="default">
             <Link href="/teams">Squadre</Link>
           </Button>
@@ -26,6 +26,9 @@ export default function HeroSection() {
           </Button>
           <Button asChild variant="default">
             <Link href="/rosters">Rosters</Link>
+          </Button>
+          <Button asChild variant="default">
+            <Link href="/splits">Splits</Link>
           </Button>
         </div>
       </div>

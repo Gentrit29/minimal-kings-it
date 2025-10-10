@@ -53,6 +53,9 @@ export default function Header() {
           <Button asChild variant="ghost">
             <Link href="/rosters">Rosters</Link>
           </Button>
+          <Button asChild variant="ghost">
+            <Link href="/splits">Splits</Link>
+          </Button>
           {isAuthenticated && (
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
@@ -64,6 +67,9 @@ export default function Header() {
                 </DropdownMenuItem>
                 <DropdownMenuItem asChild>
                   <Link href="/dashboard/presidents">Presidenti</Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem asChild>
+                  <Link href="/dashboard/splits">Splits</Link>
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
@@ -111,6 +117,9 @@ export default function Header() {
             <Button asChild variant="ghost">
               <Link href="/rosters">Rosters</Link>
             </Button>
+            <Button asChild variant="ghost">
+              <Link href="/splits">Splits</Link>
+            </Button>
             {isAuthenticated && (
               <div className="w-40">
                 <Button
@@ -134,6 +143,11 @@ export default function Header() {
                     <Button asChild variant="ghost">
                       <Link href="/dashboard/presidents" className="py-1">
                         Presidenti
+                      </Link>
+                    </Button>
+                    <Button asChild variant="ghost">
+                      <Link href="/dashboard/splits" className="py-1">
+                        Splits
                       </Link>
                     </Button>
                   </div>
