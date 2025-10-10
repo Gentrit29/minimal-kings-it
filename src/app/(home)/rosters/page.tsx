@@ -5,6 +5,7 @@ import RosterSkeleton from "@/components/RosterSkeleton";
 import RosterCard from "@/components/shared/RosterCard";
 
 import { useFilteredRoster, useTeamsWithRosters } from "@/hooks";
+import { useSplits } from "@/hooks/split";
 
 import { Roster, Team } from "@/lib/types";
 import { useState } from "react";
@@ -16,18 +17,23 @@ interface Filters {
   role?: string;
   status?: string;
   role_field?: string;
+  split_id?: number;
 }
 
 export default function Rosters() {
-  const [filters, setFilters] = useState<Filters>({});
+  const [filters, setFilters] = useState<Filters>({
+    split_id: 8,
+  });
 
   const { data: teams } = useTeamsWithRosters();
+  const { data: splits } = useSplits();
 
   const { data, isLoading } = useFilteredRoster(
     filters.teamId,
     filters.role,
     filters.status,
     filters.role_field,
+    filters.split_id,
   );
 
   if (isLoading) return <RosterSkeleton />;
@@ -36,6 +42,7 @@ export default function Rosters() {
     <main className="px-8 py-10">
       <RosterFilter
         teams={teams ?? []}
+        splits={splits ?? []}
         filters={filters}
         onChange={(newFilters) =>
           setFilters((prev) => ({ ...prev, ...newFilters }))

@@ -7,34 +7,53 @@ import {
   SelectItem,
   SelectValue,
 } from "@/components/ui/select";
-import { Team } from "@/lib/types";
+import { SplitWithWinner, Team } from "@/lib/types";
 import { Button } from "./ui/Button";
 
 type RosterFilterProps = {
   teams: Team[];
+  splits: SplitWithWinner[];
   filters: {
     teamId?: number;
     role?: string;
     status?: string;
     role_field?: string;
+    split_id?: number;
   };
   onChange: (filters: {
     teamId?: number;
     role?: string;
     status?: string;
     role_field?: string;
+    split_id?: number;
   }) => void;
 };
 
 export default function RosterFilter({
   teams,
+  splits,
   onChange,
   filters,
 }: RosterFilterProps) {
-  const { teamId, role, status, role_field } = filters;
+  const { teamId, role, status, role_field, split_id } = filters;
 
   return (
     <div className="bg-card border-border mb-5 flex flex-wrap gap-4 rounded-md border p-2">
+      <Select
+        value={split_id?.toString()}
+        onValueChange={(val) => onChange({ split_id: Number(val) })}
+      >
+        <SelectTrigger>
+          <SelectValue placeholder="Seleziona Split" />
+        </SelectTrigger>
+        <SelectContent>
+          {splits.map((split) => (
+            <SelectItem key={split.id} value={split.id!.toString()}>
+              {split.name}
+            </SelectItem>
+          ))}
+        </SelectContent>
+      </Select>
       <Select
         value={teamId?.toString()}
         onValueChange={(val) => onChange({ teamId: Number(val) })}
