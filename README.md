@@ -73,6 +73,12 @@ This is a personal project. Feel free to explore the code.
 
 If you have any feedback or run into issues, you're welcome to open an issue on the repository.
 
+## Legal Disclaimer
+
+This is a personal, non-commercial project and is not affiliated with Kings League. All trademarks, logos, and names mentioned belong to their respective owners. If the owners (Kings League) object to this project being publicly accessible and hosted, it can be taken down or made private upon request.
+
+You can find the email in my GitHub profile.
+
 ## License
 
 This project is licensed under the MIT License. See the [LICENSE](./LICENSE) file for details.
