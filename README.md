@@ -13,6 +13,7 @@ This project aims to deliver fast discovery of Italian teams and newly added pla
 - Teams page: quick overview of all teams with presidents, logos, and rosters
 - Presidents page: all social links included
 - Rosters page: detailed information for players, coaches, and staff
+- Splits page: overview of all splits, including start and end dates, cup name, and winner
 - Dark and light themes
 - Responsive design: desktop, tablet, and mobile
 - Admin login: access the dashboard to manage teams, presidents, and rosters
