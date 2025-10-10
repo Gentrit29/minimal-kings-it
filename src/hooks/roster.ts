@@ -60,11 +60,13 @@ export function useFilteredRoster(
   teamId?: number,
   role?: string,
   status?: string,
-  roleField?: string,
+  role_field?: string,
+  split_id?: number,
 ) {
   const { data, isLoading } = useQuery({
-    queryKey: ["filteredRoster", teamId, role, status, roleField],
-    queryFn: () => getFilteredRoster(teamId, role, status, roleField),
+    queryKey: ["filteredRoster", teamId, role, status, role_field, split_id],
+    queryFn: () =>
+      getFilteredRoster(teamId, role, status, role_field, split_id),
   });
 
   return { data, isLoading };

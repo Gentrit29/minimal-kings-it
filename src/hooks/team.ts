@@ -9,10 +9,10 @@ import { Team } from "@/lib/types";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import toast from "react-hot-toast";
 
-export function useTeamsWithRosters() {
+export function useTeamsWithRosters(split_id?: number) {
   const { data, isLoading, error } = useQuery({
-    queryKey: ["teamsWithRoster"],
-    queryFn: getTeamsWithRosters,
+    queryKey: ["teamsWithRoster", split_id],
+    queryFn: () => getTeamsWithRosters(split_id),
   });
 
   return { data, isLoading, error };
