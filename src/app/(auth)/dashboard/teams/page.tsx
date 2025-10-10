@@ -47,7 +47,7 @@ export default function DashboardTeams() {
           <UserStar />
           Dashboard Squadre KL
         </h2>
-        <div className="flex items-center justify-between gap-2 sm:ml-auto">
+        <div className="flex flex-wrap items-center justify-between gap-2 sm:ml-auto">
           <SplitSelect
             splits={splits ?? []}
             value={splitId}
