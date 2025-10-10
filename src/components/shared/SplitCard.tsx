@@ -34,7 +34,7 @@ export default function SplitCard({ split, children }: PresidentCardProps) {
       </div>
       <div className="flex items-center gap-2">
         <Medal className="text-primary" />
-        <span className="text-lg">
+        <span className="text-base sm:text-lg">
           {split.winner_team_id?.name || "Da definere"}
         </span>
       </div>
