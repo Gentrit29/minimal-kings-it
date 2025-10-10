@@ -7,7 +7,7 @@ import AddTeamForm from "@/components/dashboard/teams/AddTeamForm";
 import TeamRow from "@/components/dashboard/teams/TeamRow";
 import RosterRow from "@/components/dashboard/teams/RosterRow";
 
-import { useTeamsWithRosters } from "@/hooks";
+import { useSplits, useTeamsWithRosters } from "@/hooks";
 
 import { Roster, Team } from "@/lib/types";
 
@@ -15,6 +15,7 @@ import { Button } from "@/components/ui/Button";
 
 import { CirclePlus, UserStar } from "lucide-react";
 import DashboardSkeleton from "@/components/DashboardSkeleton";
+import SplitSelect from "@/components/SplitSelect";
 
 export default function DashboardTeams() {
   const [toggleTeamForm, setToggleTeamForm] = useState(false);
@@ -23,6 +24,8 @@ export default function DashboardTeams() {
   const [openTeam, setOpenTeam] = useState<number | undefined>(undefined);
   const [selectedRoster, setSelectedRoster] = useState<Roster | null>(null);
   const [selectedTeam, setSelectedTeam] = useState<Team | null>(null);
+
+  const [splitId, setSplitId] = useState<number | undefined>(8);
 
   const handleEditRoster = (roster: Roster) => {
     setSelectedRoster(roster);
@@ -34,7 +37,8 @@ export default function DashboardTeams() {
     setToggleTeamForm(true);
   };
 
-  const { data: teams, isLoading } = useTeamsWithRosters();
+  const { data: teams, isLoading } = useTeamsWithRosters(splitId);
+  const { data: splits } = useSplits();
 
   return (
     <div className="space-y-2 px-8 py-10">
@@ -44,6 +48,11 @@ export default function DashboardTeams() {
           Dashboard Squadre KL
         </h2>
         <div className="flex items-center justify-between gap-2 sm:ml-auto">
+          <SplitSelect
+            splits={splits ?? []}
+            value={splitId}
+            onChange={setSplitId}
+          />
           <Button variant="default" onClick={() => setToggleTeamForm(true)}>
             <CirclePlus /> Squadra
           </Button>
